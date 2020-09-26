@@ -12,7 +12,7 @@
 </head>
 <body>
 	<div class="container">
-		<a href="{{route('post.create')}}" class="btn btn-primary btn-sm">Add New</a>
+		<a href="{{route('post.create')}}" class="btn btn-primary btn-sm">Add New Post</a>
 		<table class="table table-bordered table-sm">
 			<thead>
 				<tr>
@@ -37,6 +37,7 @@
 							@csrf
 							@method('DELETE')
 							<button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+							<a href="{{ route('photo.create',$post->id) }}" class="btn">Upload Image</a>
 						</form>
 					</td>
 				</tr>
