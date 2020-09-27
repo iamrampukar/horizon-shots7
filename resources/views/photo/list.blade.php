@@ -20,28 +20,17 @@
 			<thead>
 				<tr>
 					<th scope="col">#</th>
-					<th scope="col"></th>
-					<th scope="col">Title</th>
-					<th scope="col">Short Description</th>
-					<th scope="col">Full Description</th>
+					<th scope="col">Preview</th>
 					<th scope="col"></th>
 				</tr>
 			</thead>
 			<tbody>
-				@foreach($posts as $post)
+				@foreach($modelRec as $photo)
 				<tr>
 					<td>{{ $indx++ }}</td>
+					<td>{{$photo->img_url}}</td>
 					<td>
-						<a href="{{ route('photo.create',$post->id) }}" class="btn btn-warning btn-sm"><i class="fa fa-cloud-upload"></i></a>
-						<a href="{{ route('photo.list',$post->id) }}" class="btn btn-dark btn-sm"><i class="fa fa-list"></i></a>
-					</td>
-					<td>{{$post->title}}</td>
-					<td>{{$post->short_description}}</td>
-					<td>{{$post->full_description}}</td>
-					<td>
-						<form action="{{ route('post.destroy',$post->id) }}" method="POST">
-							<a href="{{ route('post.show',$post->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>
-							<a href="{{ route('post.edit',$post->id) }}" class="btn btn-dark btn-sm"><i class="fa fa-edit"></i></i></a>
+						<form action="{{ route('post.destroy',$photo->id) }}" method="POST">
 							@csrf
 							@method('DELETE')
 							<button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>

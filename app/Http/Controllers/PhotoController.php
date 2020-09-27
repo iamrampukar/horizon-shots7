@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Model\Photo;
 use Illuminate\Http\Request;
 use File;
+use DB;
+use Image;
 
 class PhotoController extends Controller
 {
@@ -43,13 +45,21 @@ class PhotoController extends Controller
         if($request->hasfile('img_url'))
         {
             try {
-                $path = public_path('file_box') .DIRECTORY_SEPARATOR. $request->post_id;
+                $path = public_path('file_box') .DIRECTORY_SEPARATOR. $request->post_id. DIRECTORY_SEPARATOR.'thumb';
                 File::makeDirectory($path, $mode = 0777, true, true);
+
+                // $thumb = public_path('file_box/'.$request->post_id) .DIRECTORY_SEPARATOR. 'thumb';
+                // File::makeDirectory($path, $mode = 0777, true, true);
 
                 foreach($request->file('img_url') as $file)
                 {
-                    $imageName = time().'.'.$file->getClientOriginalName();
-                    $file->move(public_path('file_box/'.$request->post_id), $imageName);
+                    $fileName = time();
+                    $imageName = $fileName.'_'.$file->getClientOriginalName();
+                    $thumb = $fileName.'_thumb_'.$fileName.$file->getClientOriginalName();
+                    // $file->move(public_path('file_box/'.$request->post_id), $imageName);
+                   
+                    Image::make($file)->fit(250,250)->save(public_path('/file_box/'.$thumb));
+                    $file->move(public_path('file_box'), $imageName);
                     Photo::create([
                         'post_id' => $request->post_id,
                         'img_url' => $imageName
@@ -106,5 +116,15 @@ class PhotoController extends Controller
     public function destroy(Photo $photo)
     {
         //
+    }
+
+    public function list(Request $request) {
+        $matchPostId = ['post_id' => $request->id];
+        $modelRec = Photo::where($matchPostId)->get();
+
+        // $model = DB::table('posts')->where('id',$request->id)
+        // ->join('photos', 'post_id', '=', $request->id);
+        // dd($model);
+        return view('photo.list',compact('modelRec'));
     }
 }
