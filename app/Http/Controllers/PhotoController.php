@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Model\Photo;
 use Illuminate\Http\Request;
+use File;
 
 class PhotoController extends Controller
 {
@@ -41,16 +42,22 @@ class PhotoController extends Controller
         ]);
         if($request->hasfile('img_url'))
         {
-            $insertFile = array();
-            foreach($request->file('img_url') as $file)
-            {
-                // $imageName = time().'.'.$file->extension();
-                $imageName = time().'.'.$file->getClientOriginalName();
-                $file->move(public_path().'/file_box/', $imageName);
-                Photo::create([
-                    'post_id' => $request->post_id,
-                   'img_url' => $imageName
-               ]);
+            try {
+                $path = public_path('file_box') .DIRECTORY_SEPARATOR. $request->post_id;
+                File::makeDirectory($path, $mode = 0777, true, true);
+
+                foreach($request->file('img_url') as $file)
+                {
+                    $imageName = time().'.'.$file->getClientOriginalName();
+                    $file->move(public_path('file_box/'.$request->post_id), $imageName);
+                    Photo::create([
+                        'post_id' => $request->post_id,
+                        'img_url' => $imageName
+                    ]);
+                }
+            } catch (Throwable $e) {
+                echo "<pre>";
+                print_r($e->getMessage());
             }
         }
         return redirect()->route('post.index');
