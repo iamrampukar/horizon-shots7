@@ -45,29 +45,24 @@ class PhotoController extends Controller
         if($request->hasfile('img_url'))
         {
             try {
-                $path = public_path('file_box') .DIRECTORY_SEPARATOR. $request->post_id. DIRECTORY_SEPARATOR.'thumb';
+                $separator = DIRECTORY_SEPARATOR;
+                $path = public_path('file_box') .$separator. $request->post_id. $separator.'thumb';
                 File::makeDirectory($path, $mode = 0777, true, true);
-
-                // $thumb = public_path('file_box/'.$request->post_id) .DIRECTORY_SEPARATOR. 'thumb';
-                // File::makeDirectory($path, $mode = 0777, true, true);
-
                 foreach($request->file('img_url') as $file)
                 {
-                    $fileName = time();
-                    $imageName = $fileName.'_'.$file->getClientOriginalName();
-                    $thumb = $fileName.'_thumb_'.$fileName.$file->getClientOriginalName();
-                    // $file->move(public_path('file_box/'.$request->post_id), $imageName);
-                   
-                    Image::make($file)->fit(250,250)->save(public_path('/file_box/'.$thumb));
-                    $file->move(public_path('file_box'), $imageName);
+                    $imageName = time().'_'.$file->getClientOriginalName();
+                    $basePath = 'file_box'.$separator.$request->post_id;
+                    $thumbPath = $basePath.$separator.'thumb'.$separator.$imageName;
+
+                    Image::make($file)->fit(250,250)->save(public_path($thumbPath));
+                    $file->move(public_path($basePath), $imageName);
                     Photo::create([
                         'post_id' => $request->post_id,
                         'img_url' => $imageName
                     ]);
                 }
             } catch (Throwable $e) {
-                echo "<pre>";
-                print_r($e->getMessage());
+                dd($e->getMessage());
             }
         }
         return redirect()->route('post.index');
