@@ -28,9 +28,11 @@
 				@foreach($modelRec as $photo)
 				<tr>
 					<td>{{ $indx++ }}</td>
-					<td>{{$photo->img_url}}</td>
 					<td>
-						<form action="{{ route('post.destroy',$photo->id) }}" method="POST">
+						<img src="{{ asset('file_box/'.$photo->post_id.'/thumb/'.$photo->img_url)}}">
+					</td>
+					<td>
+						<form action="{{ route('photo.destroy',$photo->id) }}" method="POST">
 							@csrf
 							@method('DELETE')
 							<button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>

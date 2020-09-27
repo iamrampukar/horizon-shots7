@@ -20,7 +20,7 @@
 			<thead>
 				<tr>
 					<th scope="col">#</th>
-					<th scope="col"></th>
+					<th scope="col">Image Action</th>
 					<th scope="col">Title</th>
 					<th scope="col">Short Description</th>
 					<th scope="col">Full Description</th>
@@ -32,8 +32,13 @@
 				<tr>
 					<td>{{ $indx++ }}</td>
 					<td>
+						<form action="{{ route('photo.delete',$post->id) }}" method="POST">
 						<a href="{{ route('photo.create',$post->id) }}" class="btn btn-warning btn-sm"><i class="fa fa-cloud-upload"></i></a>
 						<a href="{{ route('photo.list',$post->id) }}" class="btn btn-dark btn-sm"><i class="fa fa-list"></i></a>
+							@csrf
+							@method('DELETE')
+							<button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+						</form>
 					</td>
 					<td>{{$post->title}}</td>
 					<td>{{$post->short_description}}</td>

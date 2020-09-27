@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model\Photo;
+use App\Model\Post;
 use Illuminate\Http\Request;
 use File;
 use DB;
@@ -54,7 +55,11 @@ class PhotoController extends Controller
                     $basePath = 'file_box'.$separator.$request->post_id;
                     $thumbPath = $basePath.$separator.'thumb'.$separator.$imageName;
 
-                    Image::make($file)->fit(250,250)->save(public_path($thumbPath));
+                    // Image::make($file)->fit(250,250)->save(public_path($thumbPath));
+                    Image::make($file)->resize(50, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save(public_path($thumbPath));
+
                     $file->move(public_path($basePath), $imageName);
                     Photo::create([
                         'post_id' => $request->post_id,
@@ -110,16 +115,34 @@ class PhotoController extends Controller
      */
     public function destroy(Photo $photo)
     {
-        //
+       
+        $separator = DIRECTORY_SEPARATOR;
+        $basePath = 'file_box'.$separator.$photo->post_id;
+        $thumbPath = $basePath.$separator.'thumb'.$separator.$photo->img_url;
+        $filePath = public_path($basePath.$separator.$photo->img_url);
+        if (File::exists($filePath)){
+            @unlink($thumbPath);
+            @unlink($filePath);
+        }
+        $photo->delete();
+        return back()->withInput();
     }
 
     public function list(Request $request) {
         $matchPostId = ['post_id' => $request->id];
         $modelRec = Photo::where($matchPostId)->get();
-
-        // $model = DB::table('posts')->where('id',$request->id)
-        // ->join('photos', 'post_id', '=', $request->id);
-        // dd($model);
         return view('photo.list',compact('modelRec'));
+    }
+
+    public function delete($id) {
+        $separator = DIRECTORY_SEPARATOR;
+        $basePath = 'file_box'.$separator.$id;
+        File::deleteDirectory(public_path($basePath));
+        $modelPost = Post::find($id);
+        $modelPost->delete();
+        
+        $modelPhoto=Photo::where("post_id","=",$id);
+        $modelPhoto->delete();
+        return redirect()->route('post.index');
     }
 }
