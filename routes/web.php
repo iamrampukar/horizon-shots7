@@ -35,3 +35,7 @@ Route::delete('photo/{photo}','photoController@destroy')->name('photo.destroy');
 // Route::get('photo/{photo}/edit','photoController@edit')->name('photo.edit');
 Route::get('photo/list/{id}','photoController@list')->name('photo.list');
 Route::delete('photo/delete/{photo}','photoController@delete')->name('photo.delete');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
