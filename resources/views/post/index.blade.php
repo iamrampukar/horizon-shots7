@@ -40,9 +40,10 @@
 							<button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
 						</form>
 					</td>
-					<td>{{$post->title}}</td>
-					<td>{{$post->short_description}}</td>
-					<td>{{$post->full_description}}</td>
+					<td>{{ $post->title }}</td>
+					<td>{!! $post->short_description !!}</td>
+
+					<td>{!! $post->full_description !!}</td>
 					<td>
 						<form action="{{ route('post.destroy',$post->id) }}" method="POST">
 							<a href="{{ route('post.show',$post->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>
