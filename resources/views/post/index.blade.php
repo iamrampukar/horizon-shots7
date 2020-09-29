@@ -48,6 +48,8 @@
 						<form action="{{ route('post.destroy',$post->id) }}" method="POST">
 							<a href="{{ route('post.show',$post->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>
 							<a href="{{ route('post.edit',$post->id) }}" class="btn btn-dark btn-sm"><i class="fa fa-edit"></i></i></a>
+							<a href="{{ route('post.image.create',$post->id) }}" class="btn btn-warning btn-sm"><i class="fa fa-cloud-upload"></i></a>
+							<a href="{{ route('post.image.list',$post->id) }}" class="btn btn-dark btn-sm"><i class="fa fa-list"></i></a>
 							@csrf
 							@method('DELETE')
 							<button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>

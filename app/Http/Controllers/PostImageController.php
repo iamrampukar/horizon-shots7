@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Model\Photo;
-use App\Model\Post;
+use App\Model\PostImage;
 use Illuminate\Http\Request;
 use File;
 use DB;
 use Image;
 
-class PhotoController extends Controller
+class PostImageController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -20,7 +19,7 @@ class PhotoController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -28,7 +27,7 @@ class PhotoController extends Controller
      */
     public function index()
     {
-        return view('photo.index');
+        return view('post_image.index');
     }
 
     /**
@@ -38,7 +37,7 @@ class PhotoController extends Controller
      */
     public function create()
     {
-        return view('photo.create');
+        return view('post_image.create');
     }
 
     /**
@@ -57,12 +56,12 @@ class PhotoController extends Controller
         {
             try {
                 $separator = DIRECTORY_SEPARATOR;
-                $path = public_path('file_box') .$separator.'gallery'.$separator.$request->post_id. $separator.'thumb';
+                $path = public_path('file_box') .$separator.'post'. $separator.$request->post_id. $separator.'thumb';
                 File::makeDirectory($path, $mode = 0777, true, true);
                 foreach($request->file('img_url') as $file)
                 {
                     $imageName = time().'_'.$file->getClientOriginalName();
-                    $basePath = 'file_box'.$separator.'gallery'.$separator.$request->post_id;
+                    $basePath = 'file_box'.$separator.'post'.$separator.$request->post_id;
                     $thumbPath = $basePath.$separator.'thumb'.$separator.$imageName;
 
                     // Image::make($file)->fit(250,250)->save(public_path($thumbPath));
@@ -71,7 +70,7 @@ class PhotoController extends Controller
                     })->save(public_path($thumbPath));
 
                     $file->move(public_path($basePath), $imageName);
-                    Photo::create([
+                    PostImage::create([
                         'post_id' => $request->post_id,
                         'img_url' => $imageName
                     ]);
@@ -86,10 +85,10 @@ class PhotoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Model\Photo  $photo
+     * @param  \App\Model\PostImage  $postImage
      * @return \Illuminate\Http\Response
      */
-    public function show(Photo $photo)
+    public function show(PostImage $postImage)
     {
         //
     }
@@ -97,10 +96,10 @@ class PhotoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Model\Photo  $photo
+     * @param  \App\Model\PostImage  $postImage
      * @return \Illuminate\Http\Response
      */
-    public function edit(Photo $photo)
+    public function edit(PostImage $postImage)
     {
         //
     }
@@ -109,10 +108,10 @@ class PhotoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Model\Photo  $photo
+     * @param  \App\Model\PostImage  $postImage
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Photo $photo)
+    public function update(Request $request, PostImage $postImage)
     {
         //
     }
@@ -120,39 +119,38 @@ class PhotoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Model\Photo  $photo
+     * @param  \App\Model\PostImage  $postImage
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Photo $photo)
+    public function destroy(PostImage $postImage)
     {
-       
         $separator = DIRECTORY_SEPARATOR;
-        $basePath = 'file_box'.$separator.'gallery'.$separator.$photo->post_id;
-        $thumbPath = $basePath.$separator.'thumb'.$separator.$photo->img_url;
-        $filePath = public_path($basePath.$separator.$photo->img_url);
+        $basePath = 'file_box'.$separator.'post'.$separator.$postImage->post_id;
+        $thumbPath = $basePath.$separator.'thumb'.$separator.$postImage->img_url;
+        $filePath = public_path($basePath.$separator.$postImage->img_url);
         if (File::exists($filePath)){
             @unlink($thumbPath);
             @unlink($filePath);
         }
-        $photo->delete();
+        $postImage->delete();
         return back()->withInput();
     }
 
     public function list(Request $request) {
         $matchPostId = ['post_id' => $request->id];
-        $modelRec = Photo::where($matchPostId)->get();
-        return view('photo.list',compact('modelRec'));
+        $modelRec = PostImage::where($matchPostId)->get();
+        return view('post_image.list',compact('modelRec'));
     }
 
     public function delete($id) {
         $separator = DIRECTORY_SEPARATOR;
-        $basePath = 'file_box'.$separator.'gallery'.$separator.$id;
+        $basePath = 'file_box'.$separator.'post'.$separator.$id;
         File::deleteDirectory(public_path($basePath));
-        $modelPost = Post::find($id);
+        $modelPost = PostImage::find($id);
         $modelPost->delete();
         
-        $modelPhoto=Photo::where("post_id","=",$id);
-        $modelPhoto->delete();
+        $modelPostImage=PostImage::where("post_id","=",$id);
+        $modelPostImage->delete();
         return redirect()->route('post.index');
     }
 }

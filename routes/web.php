@@ -26,6 +26,19 @@ Route::put('post/{post}','PostController@update')->name('post.update');
 Route::delete('post/{post}','PostController@destroy')->name('post.destroy');
 Route::get('post/{post}/edit','PostController@edit')->name('post.edit');
 
+// PostImageController
+// Route::get('post/image/{id}','PostController@image')->name('post.image');
+// Route::post('post/image-upload','PostController@imageUpload')->name('post.image-upload');
+// Route::get('post/list/{id}','PostController@list')->name('post.list');
+// Route::delete('post/image/{image}','PostController@destroyImage')->name('post.destroy-image');
+
+Route::post('post-image','PostImageController@store')->name('post.image.store');
+Route::get('post-image/create/{id}','PostImageController@create')->name('post.image.create');
+Route::delete('post-image/{postImage}','PostImageController@destroy')->name('post.image.destroy');
+Route::get('post-image/list/{id}','PostImageController@list')->name('post.image.list');
+// Route::delete('post-image/delete/{postImage}','PostImageController@delete')->name('post.image.delete');
+
+
 /* Photo Module */
 // Route::get('photo','photoController@index')->name('photo.index');
 Route::post('photo','photoController@store')->name('photo.store');

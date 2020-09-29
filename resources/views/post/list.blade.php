@@ -29,10 +29,10 @@
 				<tr>
 					<td>{{ $indx++ }}</td>
 					<td>
-						<img src="{{ asset('file_box/gallery/'.$photo->post_id.'/thumb/'.$photo->img_url)}}">
+						<img src="{{ asset('file_box/post/'.$photo->post_id.'/thumb/'.$photo->img_url)}}">
 					</td>
 					<td>
-						<form action="{{ route('photo.destroy',$photo->id) }}" method="POST">
+						<form action="{{ route('post.destroy-image',$photo->id) }}" method="POST">
 							@csrf
 							@method('DELETE')
 							<button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
