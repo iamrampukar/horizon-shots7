@@ -233,47 +233,13 @@
         <div class="blog-area">
             <div class="container-fluid">
                 <div class="row no-gutter">
-                    <div class="col-sm-12 fix">
-                        <div class="single-blog-post single-home-area post-3 fix text-center">
-                            <div class="post-overlay text-center">
-                                <h4 class="post-date">May 24, 2016 | John Doe | <a href="#">Travel</a></h4>
-                                <h2 class="text-uppercase blog-heading">A Journey to Long Beach Island</h2>
-                                <a href="single-blog.html" class="read-more text-uppercase">+Read the Story</a>
-                            </div>
-                            <div class="hover-icon fix">
-                                <a href="#"><i class="fa fa-heart"></i><span>3</span></a>
-                                <a href="#"><i class="fa fa-comment"></i><span>4</span></a>
-                            </div>
-                            <a class="post-link" href="single-blog.html"></a>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div id="video_container" class="single-blog-post post-2 fix text-center">
-                            <video autoplay="autoplay" loop="loop" id="bgvid-2">
-                                <source src="{{ asset('videos/video-post.mp4')}}" type="video/mp4" />
-                            </video>
-                            <div class="post-overlay text-center">
-                                <h4 class="post-date">July 12, 2016 | John Doe | Travel</h4>
-
-                                <h2 class="text-uppercase blog-heading">Making nice to hill</h2>
-
-                                <a href="single-blog.html" class="read-more text-uppercase">+Read the Story</a>
-                            </div>
-                            <div class="hover-icon fix">
-                                <a href="#"><i class="fa fa-heart-o"></i><span>3</span></a>
-                                <a href="#"><i class="fa fa-comment"></i><span>4</span></a>
-                            </div>
-                            <a class="post-link" href="single-blog.html"></a>
-                        </div>
-                    </div>
+                	@foreach($modelRec as $value)
                     <div class="col-sm-6">
                         <div class="single-blog-post post-2 fix text-center">
-                            <img src="{{ asset('images/post-5.jpg') }}" alt="" />
+                            <img src="{{ asset('file_box/post').'/'.$value->id.'/'.$value->img_url }}" alt="" />
                             <div class="post-overlay text-center">
-                                <h4 class="post-date">August 24, 2016 | John Doe | Travel</h4>
-
-                                <h2 class="text-uppercase blog-heading">The Bold trip to Australia</h2>
-
+                                <h4 class="post-date">{{ $value->created_at }}</h4>
+                                <h2 class="text-uppercase blog-heading">{{ $value->title }}</h2>
                                 <a href="single-blog.html" class="read-more text-uppercase">+Read the Story</a>
                             </div>
                             <div class="hover-icon fix">
@@ -283,40 +249,7 @@
                             <a class="post-link" href="single-blog.html"></a>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="single-blog-post post-2 fix text-center">
-                            <img src="{{ asset('images/post-9.jpg') }}" alt="" />
-                            <div class="post-overlay text-center">
-                                <h4 class="post-date">August 24, 2016 | John Doe | Travel</h4>
-
-                                <h2 class="text-uppercase blog-heading">The Bold trip to Australia</h2>
-
-                                <a href="single-blog.html" class="read-more text-uppercase">+Read the Story</a>
-                            </div>
-                            <div class="hover-icon fix">
-                                <a href="#"><i class="fa fa-heart-o"></i><span>3</span></a>
-                                <a href="#"><i class="fa fa-comment"></i><span>4</span></a>
-                            </div>
-                            <a class="post-link" href="single-blog.html"></a>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="single-blog-post post-2 fix text-center">
-                            <img src="{{ asset('images/post-2.jpg') }}" alt="" />
-                            <div class="post-overlay text-center">
-                                <h4 class="post-date">August 24, 2016 | John Doe | Travel</h4>
-
-                                <h2 class="text-uppercase blog-heading">Gutter Passion in the hill</h2>
-
-                                <a href="single-blog.html" class="read-more text-uppercase">+Read the Story</a>
-                            </div>
-                            <div class="hover-icon fix">
-                                <a href="#"><i class="fa fa-heart-o"></i><span>3</span></a>
-                                <a href="#"><i class="fa fa-comment"></i><span>4</span></a>
-                            </div>
-                            <a class="post-link" href="single-blog.html"></a>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

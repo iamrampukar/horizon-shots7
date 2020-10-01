@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
 
 class WelcomeController extends Controller
 {
@@ -13,7 +14,14 @@ class WelcomeController extends Controller
      */
     public function index()
     {
-        return view('welcome');
+        $modelRec = DB::table('posts')
+            ->join('post_images', 'posts.id', '=', 'post_images.post_id')
+            ->select('posts.*', 'post_images.img_url')
+            ->orderByDesc('posts.id')
+            ->limit(4)
+            ->get();
+            // dd($modelRec);
+        return view('welcome',compact('modelRec'));
     }
 
     /**

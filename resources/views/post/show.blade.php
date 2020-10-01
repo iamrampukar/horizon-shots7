@@ -25,11 +25,11 @@
 				</tr>
 				<tr>
 					<th>Short Description</th>
-					<td>{{$post->short_description}}</td>
+					<td>{!! $post->short_description !!}</td>
 				</tr>
 				<tr>
 					<th>Short Description</th>
-					<td>{{$post->full_description}}</td>
+					<td>{!! $post->full_description !!}</td>
 				</tr>
 				<tr>
 					<td colspan="2">

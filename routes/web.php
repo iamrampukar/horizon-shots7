@@ -16,6 +16,18 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+
+// Route::get('/sql', function () {
+// 	$modelRec = DB::table('posts')
+//             ->join('post_images', 'posts.id', '=', 'post_images.post_id')
+//             ->select('posts.id', 'post_images.img_url')
+//             ->orderByDesc('posts.id')
+//         	->limit(3)
+//             ->get();
+//     echo "<pre>";
+//     print_r($modelRec);
+//     return;
+// });
 Route::get('/','WelcomeController@index')->name('welcome.index');
 // Route::resource('post','PostController');
 Route::get('post','PostController@index')->name('post.index');
